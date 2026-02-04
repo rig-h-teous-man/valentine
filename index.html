@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Для Мар’яни 💘</title>
+
+  <style>
+    :root{
+      --pink:#ff4d6d;
+      --bg1:#ffd6e7;
+      --bg2:#ffffff;
+      --text:#3a0b1a;
+
+      --wa-bg:#e5ddd5;
+      --wa-header:#075e54;
+      --wa-accent:#25d366;
+      --wa-bubble-in:#ffffff;
+      --wa-bubble-out:#dcf8c6;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:var(--text);
+
+      /* Scroll-Fix */
+      overflow-x:hidden;
+      overflow-y:auto;
+      scroll-behavior:smooth;
+
+      transition:background 1.2s ease;
+    }
+
+    body.love{
+      background:radial-gradient(circle at center,#ffe3ef 0%,#ffd6e7 40%,#ffffff 100%);
+    }
+
+    /* ===== WhatsApp Intro ===== */
+
+    .phone{
+      width:min(520px,92vw);
+      border-radius:26px;
+      overflow:hidden;
+      box-shadow:0 18px 50px rgba(0,0,0,.18);
+      background:var(--wa-bg);
+      position:relative;
+      z-index:3;
+    }
+
+    .wa-header{
+      background:var(--wa-header);
+      color:#fff;
+      padding:14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .wa-back{
+      width:28px;height:28px;
+      border-radius:999px;
+      display:grid;place-items:center;
+      background:rgba(255,255,255,.12);
+      font-weight:700;
+    }
+
+    .wa-avatar{
+      width:34px;height:34px;
+      border-radius:999px;
+      background:rgba(255,255,255,.18);
+      display:grid;place-items:center;
+      font-weight:700;
+    }
+
+    .wa-title strong{ font-size:15px; }
+    .wa-title span{ font-size:12px; opacity:.85; }
+
+    .wa-chat{ padding:14px; min-height:320px; }
+
+    .bubble{
+      max-width:84%;
+      padding:10px 12px;
+      border-radius:16px;
+      margin:10px 0;
+      box-shadow:0 6px 14px rgba(0,0,0,.10);
+      font-size:15px;
+    }
+
+    .in{ background:var(--wa-bubble-in); }
+    .out{ background:var(--wa-bubble-out); margin-left:auto; }
+
+    .wa-footer{
+      padding:14px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .openBtn{
+      border:0;
+      padding:12px 16px;
+      border-radius:14px;
+      font-size:16px;
+      cursor:pointer;
+      background:var(--wa-accent);
+      font-weight:700;
+      box-shadow:0 10px 20px rgba(0,0,0,.14);
+    }
+
+    .hidden{ display:none!important; }
+
+    /* ===== Valentine Card ===== */
+
+    #hearts{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:1;
+      overflow:hidden;
+    }
+
+    .card{
+      width:min(520px,92vw);
+      padding:22px 18px 24px;
+      text-align:center;
+      background:rgba(255,255,255,.9);
+      border-radius:22px;
+      box-shadow:0 18px 50px rgba(0,0,0,.12);
+      position:relative;
+      z-index:2;
+      margin:20px 0 40px;
+    }
+
+    .dog{
+      width:210px;
+      max-width:58vw;
+      display:block;
+      margin:6px auto 10px;
+      transition:transform 1.2s ease;
+    }
+    .dog.love{ transform:scale(1.08); }
+
+    h1{
+      font-size:clamp(22px,4.8vw,30px);
+      margin:10px 0 14px;
+    }
+
+    .buttons{
+      position:relative;
+      height:96px;
+      display:grid;
+      place-items:center;
+      margin-bottom:10px;
+    }
+
+    .btnArena{
+      position:relative;
+      width:min(440px,92vw);
+      height:80px;
+    }
+
+    .btnRow{
+      position:absolute;
+      inset:0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0 10px;
+    }
+
+    button{
+      border:0;
+      padding:12px 18px;
+      border-radius:14px;
+      font-size:18px;
+      cursor:pointer;
+      min-width:130px;
+      box-shadow:0 10px 20px rgba(0,0,0,.12);
+    }
+
+    #yes{ background:var(--pink); color:#fff; z-index:3; }
+
+    #no{
+      background:#e6e6e6;
+      position:absolute;
+      z-index:2;
+    }
+
+    #message{
+      margin-top:14px;
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.97);
+      font-size:18px;
+      line-height:1.4;
+      display:none;
+      animation:fadeIn 1.2s ease forwards;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(10px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    #couple{
+      width:100%;
+      max-width:340px;
+      margin:18px auto 0;
+      display:none;
+      border-radius:18px;
+      box-shadow:0 12px 30px rgba(0,0,0,.18);
+      animation:fadeIn 1.6s ease forwards;
+      transform:scale(.96);
+      transition:transform 2s ease;
+    }
+    #couple.love{ transform:scale(1); }
+
+    .heart{
+      position:absolute;
+      top:-40px;
+      font-size:22px;
+      animation:fall linear forwards;
+    }
+
+    @keyframes fall{
+      to{
+        transform:translate(var(--dx),110vh) rotate(var(--rot));
+        opacity:.05;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="hearts"></div>
+
+<!-- WhatsApp Intro -->
+<section class="phone" id="intro">
+  <div class="wa-header">
+    <div class="wa-back">‹</div>
+    <div class="wa-avatar">М</div>
+    <div class="wa-title">
+      <strong>Мар’яна</strong><br>
+      <span>онлайн</span>
+    </div>
+  </div>
+
+  <div class="wa-chat">
+    <div class="bubble in">Привіт 🙂</div>
+    <div class="bubble out">Привіт, Мар’яно 💛</div>
+    <div class="bubble out">У мене є маленьке питання…</div>
+    <div class="bubble in">Яке? 😄</div>
+    <div class="bubble out">Відкрий, будь ласка 👇</div>
+  </div>
+
+  <div class="wa-footer">
+    <button class="openBtn" id="openCard">Відкрити 💘</button>
+  </div>
+</section>
+
+<!-- Valentine Card -->
+<main class="card hidden" id="card">
+
+  <img class="dog" id="dog"
+       src="https://i.ibb.co/Q316yGJb/frenchie.png"
+       alt="Frenchie" />
+
+  <h1>Мар’яно, ти будеш моєю Валентинкою? 💘</h1>
+
+  <section class="buttons">
+    <div class="btnArena" id="arena">
+      <div class="btnRow">
+        <button id="yes">ТАК 💖</button>
+        <button id="no">Ні 🙈</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="message">
+    Ура! 🥰<br>
+    Я дуже тебе люблю, Мар’яно.<br>
+    Я вдячний і щасливий, що ти є в моєму житті.<br>
+    Твій Хольгер ❤️
+
+    <img id="couple"
+         src="https://i.ibb.co/Q7WVbpJY/MH2025.png"
+         alt="Ми разом 💞" />
+  </div>
+
+</main>
+
+<script>
+const intro=document.getElementById("intro");
+const card=document.getElementById("card");
+const openCardBtn=document.getElementById("openCard");
+
+const arena=document.getElementById("arena");
+const noBtn=document.getElementById("no");
+const yesBtn=document.getElementById("yes");
+const msg=document.getElementById("message");
+const heartsLayer=document.getElementById("hearts");
+const dog=document.getElementById("dog");
+const couple=document.getElementById("couple");
+
+openCardBtn.onclick=()=>{
+  intro.classList.add("hidden");
+  card.classList.remove("hidden");
+  startNoNextToYes();
+};
+
+function placeNoRandom(){
+  const a=arena.getBoundingClientRect();
+  const x=Math.random()*(a.width-noBtn.offsetWidth);
+  const y=Math.random()*(a.height-noBtn.offsetHeight);
+  noBtn.style.left=x+"px";
+  noBtn.style.top=y+"px";
+}
+
+arena.onpointermove=e=>{
+  const r=noBtn.getBoundingClientRect();
+  const cx=r.left+r.width/2;
+  const cy=r.top+r.height/2;
+  if(Math.hypot(e.clientX-cx,e.clientY-cy)<110) placeNoRandom();
+};
+
+noBtn.onpointerdown=e=>{
+  e.preventDefault();
+  placeNoRandom();
+};
+
+function startNoNextToYes(){
+  const a=arena.getBoundingClientRect();
+  noBtn.style.left=(a.width*0.7)+"px";
+  noBtn.style.top=(a.height/2-noBtn.offsetHeight/2)+"px";
+}
+
+function spawnHeart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent=Math.random()<0.5?"💖":"💘";
+  h.style.left=Math.random()*100+"vw";
+  h.style.setProperty("--dx",(Math.random()*60-30)+"vw");
+  h.style.setProperty("--rot",(Math.random()*360-180)+"deg");
+  h.style.animationDuration=(Math.random()*1.6+1.8)+"s";
+  heartsLayer.appendChild(h);
+  setTimeout(()=>h.remove(),4500);
+}
+
+let rain=null;
+
+yesBtn.onclick=()=>{
+  msg.style.display="block";
+  document.body.classList.add("love");
+  dog.classList.add("love");
+
+  couple.style.display="block";
+  setTimeout(()=>couple.classList.add("love"),50);
+
+  if(!rain){
+    rain=setInterval(spawnHeart,120);
+    setTimeout(()=>clearInterval(rain),5200);
+  }
+
+  noBtn.disabled=true;
+  noBtn.style.opacity=.4;
+};
+</script>
+
+</body>
+</html>
