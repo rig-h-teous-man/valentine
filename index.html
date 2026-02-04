@@ -30,7 +30,6 @@
       background:linear-gradient(180deg,var(--bg1),var(--bg2));
       color:var(--text);
 
-      /* Scroll-Fix */
       overflow-x:hidden;
       overflow-y:auto;
       scroll-behavior:smooth;
@@ -312,13 +311,15 @@ const couple=document.getElementById("couple");
 openCardBtn.onclick=()=>{
   intro.classList.add("hidden");
   card.classList.remove("hidden");
-  startNoNextToYes();
+  // ensure layout is computed
+  requestAnimationFrame(startNoNextToYes);
 };
 
 function placeNoRandom(){
   const a=arena.getBoundingClientRect();
-  const x=Math.random()*(a.width-noBtn.offsetWidth);
-  const y=Math.random()*(a.height-noBtn.offsetHeight);
+  const pad=6;
+  const x=pad + Math.random()*Math.max(0,(a.width-noBtn.offsetWidth-pad));
+  const y=pad + Math.random()*Math.max(0,(a.height-noBtn.offsetHeight-pad));
   noBtn.style.left=x+"px";
   noBtn.style.top=y+"px";
 }
@@ -335,10 +336,17 @@ noBtn.onpointerdown=e=>{
   placeNoRandom();
 };
 
+/* ✅ FIX: place "Ні" directly next to the "ТАК" button (works on iPhone widths) */
 function startNoNextToYes(){
-  const a=arena.getBoundingClientRect();
-  noBtn.style.left=(a.width*0.7)+"px";
-  noBtn.style.top=(a.height/2-noBtn.offsetHeight/2)+"px";
+  const yesRect = yesBtn.getBoundingClientRect();
+  const arenaRect = arena.getBoundingClientRect();
+  const spacing = 12;
+
+  const x = (yesRect.right - arenaRect.left) + spacing;
+  const y = (arenaRect.height - noBtn.offsetHeight) / 2;
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top  = y + "px";
 }
 
 function spawnHeart(){
@@ -365,7 +373,7 @@ yesBtn.onclick=()=>{
 
   if(!rain){
     rain=setInterval(spawnHeart,120);
-    setTimeout(()=>clearInterval(rain),5200);
+    setTimeout(()=>{clearInterval(rain); rain=null;},5200);
   }
 
   noBtn.disabled=true;
