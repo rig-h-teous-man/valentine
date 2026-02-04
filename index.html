@@ -68,6 +68,7 @@
       display:grid;place-items:center;
       background:rgba(255,255,255,.12);
       font-weight:700;
+      user-select:none;
     }
 
     .wa-avatar{
@@ -76,6 +77,7 @@
       background:rgba(255,255,255,.18);
       display:grid;place-items:center;
       font-weight:700;
+      user-select:none;
     }
 
     .wa-title strong{ font-size:15px; }
@@ -110,6 +112,7 @@
       background:var(--wa-accent);
       font-weight:700;
       box-shadow:0 10px 20px rgba(0,0,0,.14);
+      touch-action:manipulation;
     }
 
     .hidden{ display:none!important; }
@@ -142,6 +145,8 @@
       display:block;
       margin:6px auto 10px;
       transition:transform 1.2s ease;
+      user-select:none;
+      -webkit-user-drag:none;
     }
     .dog.love{ transform:scale(1.08); }
 
@@ -162,6 +167,9 @@
       position:relative;
       width:min(440px,92vw);
       height:80px;
+
+      /* ✅ verhindert Scroll/Drag-Gesten NUR in der Button-Arena */
+      touch-action:none;
     }
 
     .btnRow{
@@ -181,6 +189,8 @@
       cursor:pointer;
       min-width:130px;
       box-shadow:0 10px 20px rgba(0,0,0,.12);
+      touch-action:manipulation;
+      user-select:none;
     }
 
     #yes{ background:var(--pink); color:#fff; z-index:3; }
@@ -189,6 +199,11 @@
       background:#e6e6e6;
       position:absolute;
       z-index:2;
+
+      /* ✅ NIE klickbar, NIE fokus, NIE “draggy” */
+      pointer-events:none;
+      -webkit-user-select:none;
+      user-select:none;
     }
 
     #message{
@@ -277,7 +292,7 @@
     <div class="btnArena" id="arena">
       <div class="btnRow">
         <button id="yes">ТАК 💖</button>
-        <button id="no">Ні 🙈</button>
+        <button id="no" aria-hidden="true">Ні 🙈</button>
       </div>
     </div>
   </section>
@@ -311,9 +326,12 @@ const couple=document.getElementById("couple");
 openCardBtn.onclick=()=>{
   intro.classList.add("hidden");
   card.classList.remove("hidden");
-  // ensure layout is computed
   requestAnimationFrame(startNoNextToYes);
 };
+
+// prevent iOS “page drag” in the arena
+arena.addEventListener("pointerdown", (e)=>{ e.preventDefault(); }, {passive:false});
+arena.addEventListener("touchstart", (e)=>{ e.preventDefault(); }, {passive:false});
 
 function placeNoRandom(){
   const a=arena.getBoundingClientRect();
@@ -324,19 +342,16 @@ function placeNoRandom(){
   noBtn.style.top=y+"px";
 }
 
-arena.onpointermove=e=>{
+function dodgeIfNear(clientX, clientY){
   const r=noBtn.getBoundingClientRect();
   const cx=r.left+r.width/2;
   const cy=r.top+r.height/2;
-  if(Math.hypot(e.clientX-cx,e.clientY-cy)<110) placeNoRandom();
-};
+  if(Math.hypot(clientX-cx,clientY-cy)<110) placeNoRandom();
+}
 
-noBtn.onpointerdown=e=>{
-  e.preventDefault();
-  placeNoRandom();
-};
+arena.addEventListener("pointermove", (e)=>dodgeIfNear(e.clientX,e.clientY));
 
-/* ✅ FIX: place "Ні" directly next to the "ТАК" button (works on iPhone widths) */
+/* place "Ні" directly next to "ТАК" */
 function startNoNextToYes(){
   const yesRect = yesBtn.getBoundingClientRect();
   const arenaRect = arena.getBoundingClientRect();
@@ -375,9 +390,6 @@ yesBtn.onclick=()=>{
     rain=setInterval(spawnHeart,120);
     setTimeout(()=>{clearInterval(rain); rain=null;},5200);
   }
-
-  noBtn.disabled=true;
-  noBtn.style.opacity=.4;
 };
 </script>
 
