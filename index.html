@@ -168,8 +168,8 @@
       width:min(440px,92vw);
       height:80px;
 
-      /* ✅ verhindert Scroll/Drag-Gesten NUR in der Button-Arena */
-      touch-action:none;
+      /* ✅ Wichtig: Tap bleibt möglich, kein iOS "click-kill" */
+      touch-action:manipulation;
     }
 
     .btnRow{
@@ -193,16 +193,20 @@
       user-select:none;
     }
 
-    #yes{ background:var(--pink); color:#fff; z-index:3; }
+    #yes{
+      background:var(--pink);
+      color:#fff;
+      position:relative;
+      z-index:5; /* sicher über allem */
+    }
 
     #no{
       background:#e6e6e6;
       position:absolute;
       z-index:2;
 
-      /* ✅ NIE klickbar, NIE fokus, NIE “draggy” */
+      /* ✅ nie klickbar */
       pointer-events:none;
-      -webkit-user-select:none;
       user-select:none;
     }
 
@@ -329,10 +333,6 @@ openCardBtn.onclick=()=>{
   requestAnimationFrame(startNoNextToYes);
 };
 
-// prevent iOS “page drag” in the arena
-arena.addEventListener("pointerdown", (e)=>{ e.preventDefault(); }, {passive:false});
-arena.addEventListener("touchstart", (e)=>{ e.preventDefault(); }, {passive:false});
-
 function placeNoRandom(){
   const a=arena.getBoundingClientRect();
   const pad=6;
@@ -349,9 +349,14 @@ function dodgeIfNear(clientX, clientY){
   if(Math.hypot(clientX-cx,clientY-cy)<110) placeNoRandom();
 }
 
+/* iOS zuverlässig: pointermove + touchmove */
 arena.addEventListener("pointermove", (e)=>dodgeIfNear(e.clientX,e.clientY));
+arena.addEventListener("touchmove", (e)=>{
+  const t = e.touches && e.touches[0];
+  if(t) dodgeIfNear(t.clientX, t.clientY);
+}, {passive:true});
 
-/* place "Ні" directly next to "ТАК" */
+/* Startposition: direkt neben "ТАК" */
 function startNoNextToYes(){
   const yesRect = yesBtn.getBoundingClientRect();
   const arenaRect = arena.getBoundingClientRect();
